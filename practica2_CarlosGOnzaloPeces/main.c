@@ -258,8 +258,6 @@ void delay_until (struct timeval* next_activation)
 
 int main ()
 {
-	//struct timeval clk_period = { 0, 250 * 1000 }; 
-	//struct timeval next_activation;
 	struct timespec secundary_cycle = {0, 100000000};
 	struct timespec rem;
 	struct timespec start;
@@ -322,11 +320,11 @@ while (1) {
 		case 11: break;
 
 	}
-	clock_gettime( CLOCK_MONOTONIC, &stop);
-
 	frame++;
 	if(frame>11) frame = 0;
 	
+	clock_gettime( CLOCK_MONOTONIC, &stop);
+
 	timespec_sub(&total,&stop,&start);
 	timespec_sub(&wait,&secundary_cycle,&total);
 

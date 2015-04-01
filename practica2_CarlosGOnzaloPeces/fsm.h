@@ -7,7 +7,7 @@
 
 #define MAXINS 32
 //#define NDEBUG
-//#define TIME
+//#define TIMECAL
 
 #ifndef NDEBUG
 	#define DEBUG(x) x
@@ -15,7 +15,7 @@
 	#define DEBUG(x)
 #endif
 
-#ifdef TIME
+#ifdef TIMECAL
 	#define TIME(x) x
 #else 
 	#define TIME(x)

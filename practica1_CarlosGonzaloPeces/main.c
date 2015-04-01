@@ -17,6 +17,20 @@
 #define COFFEE_TIME	3000
 #define MILK_TIME	3000
 
+struct timespec start1, stop1, total1, max1;
+struct timespec start2, stop2, total2, max2;
+struct timespec start3, stop3, total3, max3;
+
+//register the time to access to a share resource
+void register_time_resource (struct timespec* max, struct timespec* new_time)
+{
+
+	if (timespec_less (max, new_time)) {
+		max->tv_sec = new_time->tv_sec;
+		max->tv_nsec = new_time->tv_nsec;
+	}
+}
+
 enum cofm_state {//estados de la maquina de cafe
 	COFM_WAITING,
 	COFM_CUP,
@@ -83,12 +97,18 @@ static int button_pressed (fsm_t* this)
 	button = 0;
 	int ret2 = 0;
 
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start1));
 	if(can_give_coffe){
 		ret2 = 1;
 	}
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop1);
+	timespec_sub(&total2, &stop1, &start1);
+	register_time_resource(&max1,&total1);});
+
 
 	return ret&&ret2;
 }
+
 
 static int timer_finished (fsm_t* this){
 
@@ -104,9 +124,15 @@ static int button_change_pressed (fsm_t* this)
 	button_change = 0;
 	int ret2 = 0;
 
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start3));
+
 	if(!giving_coffe){
 		ret2 = 1;
 	}
+
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop3);
+	timespec_sub(&total3, &stop3, &start3);
+	register_time_resource(&max3,&total3);});
 
 	return ret&&ret2;
 }
@@ -137,10 +163,13 @@ static int money_in (fsm_t* this){
 
 static int coffe_finished (fsm_t* this){
 	int ret = 0;
-
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start2));
 	if (coffe_given){
 		ret = 1;
 	}
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop2);
+	timespec_sub(&total2, &stop2, &start2);
+	register_time_resource(&max2,&total2);});
 
 	return ret;
 
@@ -150,7 +179,15 @@ static int coffe_finished (fsm_t* this){
 static void cup (fsm_t* this)
 {
 	DEBUG(printf("Saco la taza\n"));
+
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start3));
+
 	giving_coffe = 1;
+	
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop3);
+	timespec_sub(&total3, &stop3, &start3);
+	register_time_resource(&max3,&total3);});
+
 	digitalWrite (GPIO_LED, LOW);
 	digitalWrite (GPIO_CUP, HIGH);
 	timer_start (CUP_TIME);
@@ -177,12 +214,27 @@ static void finish (fsm_t* this)
 	DEBUG(printf("Acabo el proceso de dispensado del cafe\n"));
 	digitalWrite (GPIO_MILK, LOW);
 	digitalWrite (GPIO_LED, HIGH);
+
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start2));
+
 	coffe_given = 1;
+
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop2);
+	timespec_sub(&total2, &stop2, &start2);
+	register_time_resource(&max2,&total2);});
+
 }
 
 static void money_enough(fsm_t* this){
 	DEBUG(printf("Tengo dinero suficiente\n"));
+
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start1));
+
 	can_give_coffe = 1;
+
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop1);
+	timespec_sub(&total1, &stop1, &start1);
+	register_time_resource(&max1,&total1);});
 }
 
 static void give_change (fsm_t* this){
@@ -191,10 +243,33 @@ static void give_change (fsm_t* this){
 	DEBUG(printf("Devuelvo el cambio: %d\n", change););
 	
 	money = 0;
-	can_give_coffe= 0;
+
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start1));
+
+	can_give_coffe = 0;
+
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop1);
+	timespec_sub(&total1, &stop1, &start1);
+	register_time_resource(&max1,&total1);});
+
 	coin_in = 0;
+
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start2));
+
 	coffe_given = 0;
+
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop2);
+	timespec_sub(&total2, &stop2, &start2);
+	register_time_resource(&max2,&total2);});
+
+
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start3));
+
 	giving_coffe = 0;
+
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop3);
+	timespec_sub(&total3, &stop3, &start3);
+	register_time_resource(&max3,&total3);});
 
 }
 
@@ -205,9 +280,24 @@ static void give_money (fsm_t* this){
 	DEBUG(printf("Devuelvo el dinero: %d\n", change););
 
 	money = 0;
-	can_give_coffe= 0;
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start1));
+
+	can_give_coffe = 0;
+
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop1);
+	timespec_sub(&total1, &stop1, &start1);
+	register_time_resource(&max1,&total1);});
+
 	coin_in = 0;
+
+	TIME2(clock_gettime( CLOCK_MONOTONIC, &start2));
+
 	coffe_given = 0;
+
+	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop2);
+	timespec_sub(&total2, &stop2, &start2);
+	register_time_resource(&max2,&total2);});
+
 
 }
 
@@ -301,5 +391,18 @@ while (1) {
 	printf("Tiempo maximo monedero cafe: \n");
 	printf("Segundos: %lu \n",wallet_fsm->max_time.tv_sec);
 	printf("Nano segundos: %lu \n",wallet_fsm->max_time.tv_nsec);});
+
+	TIME2({printf("Tiempo maximo can give coffe: \n");
+	printf("Segundos: %lu \n",max1.tv_sec);
+	printf("Nano segundos: %lu \n",max1.tv_nsec);
+
+	printf("Tiempo maximo coffe given: \n");
+	printf("Segundos: %lu \n",max2.tv_sec);
+	printf("Nano segundos: %lu \n",max2.tv_nsec);
+
+	printf("Tiempo maximo giving coffe: \n");
+	printf("Segundos: %lu \n",max3.tv_sec);
+	printf("Nano segundos: %lu \n",max3.tv_nsec);});
+	
 	return 0;
 }

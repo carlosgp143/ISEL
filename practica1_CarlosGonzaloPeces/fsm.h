@@ -7,7 +7,8 @@
 
 #define MAXINS 32
 #define NDEBUG
-#define TIMECAL
+//#define TIMEFIRE
+#define TIMERESOURCE
 
 #ifndef NDEBUG
 	#define DEBUG(x) x
@@ -15,10 +16,16 @@
 	#define DEBUG(x)
 #endif
 
-#ifdef TIMECAL
+#ifdef TIMEFIRE
 	#define TIME(x) x
 #else 
 	#define TIME(x)
+#endif
+
+#ifdef TIMERESOURCE
+	#define TIME2(x) x
+#else 
+	#define TIME2(x)
 #endif
 
 
@@ -55,5 +62,7 @@ void fsm_init (fsm_t* this, fsm_trans_t* tt);
 void fsm_fire (fsm_t* this); 
 
 void timespec_sub (struct timespec *res, struct timespec *a, struct timespec *b);
+
+int timespec_less (struct timespec *a, struct timespec *b);
 
 #endif

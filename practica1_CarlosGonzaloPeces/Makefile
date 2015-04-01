@@ -7,5 +7,5 @@ main: main.o fsm.o
 clean:
 	$(RM) *.o *~ main
 
-libWiringPi.a: wiringPi.o
+libwiringPi.a: wiringPi.o
 	ar rcs $@ $^
