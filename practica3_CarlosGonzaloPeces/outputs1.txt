@@ -1,0 +1,146 @@
+El pin GPIO_LED vale 1 
+--------------------tiempo maquina cafe: 
+0.000417
+0.000419
+--------------------tiempo monedero: 
+Introduzca moneda: 
+El dinero almacenado es 20
+0.002389
+0.002544
+--------------------tiempo maquina cafe: 
+0.000792
+0.000696
+--------------------tiempo monedero: 
+El pin GPIO_CHANGE vale 1 
+Devuelvo el dinero: 20
+0.003290
+0.002730
+--------------------tiempo maquina cafe: 
+0.000779
+0.000696
+--------------------tiempo monedero: 
+Introduzca moneda: 
+El dinero almacenado es 50
+Tengo dinero suficiente
+0.003402
+--------------------tiempo maquina cafe: 
+0.000808
+--------------------tiempo monedero: 
+El pin GPIO_CHANGE vale 1 
+Devuelvo el dinero: 50
+0.003121
+--------------------tiempo maquina cafe: 
+0.000752
+--------------------tiempo monedero: 
+0.000301
+--------------------tiempo maquina cafe: 
+0.000570
+--------------------tiempo monedero: 
+Introduzca moneda: 
+El dinero almacenado es 100
+Tengo dinero suficiente
+0.001780
+--------------------tiempo maquina cafe: 
+Saco la taza
+El pin GPIO_LED vale 0 
+El pin GPIO_CUP vale 1 
+0.076050
+--------------------tiempo monedero: 
+0.000373
+--------------------tiempo maquina cafe: 
+0.000708
+--------------------tiempo monedero: 
+0.000357
+--------------------tiempo maquina cafe: 
+Saco el café
+El pin GPIO_CUP vale 0 
+El pin GPIO_COFFE vale 1 
+0.014870
+--------------------tiempo monedero: 
+0.000295
+--------------------tiempo maquina cafe: 
+0.000626
+--------------------tiempo monedero: 
+Introduzca moneda: 
+El dinero almacenado es 120
+No hago nada
+0.003486
+--------------------tiempo maquina cafe: 
+Saco la leche
+El pin GPIO_COFFE vale 0 
+El pin GPIO_MILK vale 1 
+0.015310
+--------------------tiempo monedero: 
+0.000371
+--------------------tiempo maquina cafe: 
+Acabo el proceso de dispensado del cafe
+El pin GPIO_MILK vale 0 
+El pin GPIO_LED vale 1 
+0.004222
+--------------------tiempo monedero: 
+El pin GPIO_CHANGE vale 1 
+Devuelvo el cambio: 70
+0.000836
+--------------------tiempo maquina cafe: 
+0.000751
+--------------------tiempo monedero: 
+0.000313
+--------------------tiempo maquina cafe: 
+0.000816
+--------------------tiempo monedero: 
+Introduzca moneda: 
+El dinero almacenado es 10
+0.002843
+--------------------tiempo maquina cafe: 
+0.000772
+--------------------tiempo monedero: 
+0.000220
+--------------------tiempo maquina cafe: 
+0.000806
+--------------------tiempo monedero: 
+Introduzca moneda: 
+El dinero almacenado es 60
+Tengo dinero suficiente
+0.003093
+--------------------tiempo maquina cafe: 
+Saco la taza
+El pin GPIO_LED vale 0 
+El pin GPIO_CUP vale 1 
+0.014978
+--------------------tiempo monedero: 
+0.000283
+--------------------tiempo maquina cafe: 
+0.000748
+--------------------tiempo monedero: 
+0.000429
+--------------------tiempo maquina cafe: 
+0.000690
+--------------------tiempo monedero: 
+0.000281
+--------------------tiempo maquina cafe: 
+0.000750
+--------------------tiempo monedero: 
+0.000425
+--------------------tiempo maquina cafe: 
+Saco el café
+El pin GPIO_CUP vale 0 
+El pin GPIO_COFFE vale 1 
+0.015248
+--------------------tiempo monedero: 
+0.000305
+--------------------tiempo maquina cafe: 
+Saco la leche
+El pin GPIO_COFFE vale 0 
+El pin GPIO_MILK vale 1 
+0.015479
+--------------------tiempo monedero: 
+0.000267
+--------------------tiempo maquina cafe: 
+Acabo el proceso de dispensado del cafe
+El pin GPIO_MILK vale 0 
+El pin GPIO_LED vale 1 
+0.004276
+--------------------tiempo monedero: 
+El pin GPIO_CHANGE vale 1 
+Devuelvo el cambio: 10
+0.000828

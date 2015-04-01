@@ -1,0 +1,22 @@
+El pin GPIO_LED vale 1 
+Introduzca moneda: 
+El dinero almacenado es 20
+El pin GPIO_CHANGE vale 1 
+Devuelvo el dinero: 20
+Introduzca moneda: 
+El dinero almacenado es 100
+Tengo dinero suficiente
+Saco la taza
+El pin GPIO_LED vale 0 
+El pin GPIO_CUP vale 1 
+Saco el café
+El pin GPIO_CUP vale 0 
+El pin GPIO_COFFE vale 1 
+Saco la leche
+El pin GPIO_COFFE vale 0 
+El pin GPIO_MILK vale 1 
+Acabo el proceso de dispensado del cafe
+El pin GPIO_MILK vale 0 
+El pin GPIO_LED vale 1 
+El pin GPIO_CHANGE vale 1 
+Devuelvo el cambio: 50

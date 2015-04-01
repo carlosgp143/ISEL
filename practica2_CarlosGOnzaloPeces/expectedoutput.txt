@@ -1,0 +1,11 @@
+Introduzca moneda: 
+El dinero almacenado es 20
+Devuelvo el dinero: 20
+Introduzca moneda: 
+El dinero almacenado es 100
+Tengo dinero suficiente
+Saco la taza
+Saco el café
+Saco la leche
+Acabo el proceso de dispensado del cafe
+Devuelvo el cambio: 50
