@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-g -Wall -O -I.
 LDFLAGS= -L.
-LDLIBS=-lWiringPi -lrt
+LDLIBS=-lwiringPi -lrt
 all: main
 main: main.o fsm.o
 clean:

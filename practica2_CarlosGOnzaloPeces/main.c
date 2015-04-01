@@ -277,6 +277,7 @@ int main ()
 	pinMode (GPIO_COIN, INPUT);
 	wiringPiISR (GPIO_BUTTON, INT_EDGE_FALLING, button_isr);
 	wiringPiISR (GPIO_COIN, INT_EDGE_FALLING, coin_isr);
+	wiringPiISR (GPIO_BUTTON_CHANGE, INT_EDGE_FALLING, button_change_isr);
 	pinMode (GPIO_CUP, OUTPUT);
 	pinMode (GPIO_COFFEE, OUTPUT);
 	pinMode (GPIO_MILK, OUTPUT);
