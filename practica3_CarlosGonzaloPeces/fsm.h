@@ -6,9 +6,9 @@
 #define MAXSTATES 10
 
 #define MAXINS 32
-#define NDEBUG
+//#define NDEBUG
 //#define TIMEFIRE
-#define TIMERESOURCE
+//#define TIMERESOURCE
 
 #ifndef NDEBUG
 	#define DEBUG(x) x
