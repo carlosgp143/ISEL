@@ -49,7 +49,9 @@ enum mon_state{//estados del monedero
 fsm_t* cofm_fsm;
 fsm_t* wallet_fsm;
 
-pthread_mutex_t m_scr;
+pthread_mutex_t m_gc;
+pthread_mutex_t m_cgc;
+pthread_mutex_t m_cg;
 
 
 //variables de control del monedero
@@ -85,7 +87,7 @@ static void timer_isr (union sigval arg) { timer = 1; }
 
 static void timer_start (int ms)
 {
-	timer_t timerid;
+	/*timer_t timerid;
 	struct itimerspec value;
 	struct sigevent se;
 	se.sigev_notify = SIGEV_THREAD;
@@ -97,7 +99,7 @@ static void timer_start (int ms)
 	value.it_interval.tv_sec = 0;
 	value.it_interval.tv_nsec = 0;
 	timer_create (CLOCK_REALTIME, &se, &timerid);
-	timer_settime (timerid, 0, &value, NULL);
+	timer_settime (timerid, 0, &value, NULL);*/
 }
 
 static int button_pressed (fsm_t* this)
@@ -106,11 +108,11 @@ static int button_pressed (fsm_t* this)
 	button = 0;
 	int ret2 = 0;
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_cgc);
 	if(can_give_coffe){
 		ret2 = 1;
 	}
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_cgc);
 
 	return ret&&ret2;
 }
@@ -128,11 +130,11 @@ static int button_change_pressed (fsm_t* this)
 	int ret = button_change; 
 	button_change = 0;
 	int ret2 = 0;
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_gc);
 	if(!giving_coffe){
 		ret2 = 1;
 	}
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_gc);
 	return ret&&ret2;
 	
 }
@@ -164,15 +166,13 @@ static int money_in (fsm_t* this){
 static int coffe_finished (fsm_t* this){
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start2));
 
-	
-
 	int ret = 0;
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_cg);
 	if (coffe_given){
 		ret = 1;
 	}
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_cg);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop2);
 	timespec_sub(&total2, &stop2, &start2);
@@ -189,9 +189,9 @@ static void cup (fsm_t* this)
 
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start3));
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_gc);
 	giving_coffe = 1;
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_gc);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop3);
 	timespec_sub(&total3, &stop3, &start3);
@@ -225,9 +225,9 @@ static void finish (fsm_t* this)
 	digitalWrite (GPIO_LED, HIGH);
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start2));
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_cg);
 	coffe_given = 1;
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_cg);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop2);
 	timespec_sub(&total2, &stop2, &start2);
@@ -240,9 +240,9 @@ static void money_enough(fsm_t* this){
 
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start1));
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_cgc);
 	can_give_coffe = 1;
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_cgc);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop1);
 	timespec_sub(&total1, &stop1, &start1);
@@ -258,9 +258,9 @@ static void give_change (fsm_t* this){
 
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start1));
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_cgc);
 	can_give_coffe = 0;
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_cgc);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop1);
 	timespec_sub(&total1, &stop1, &start1);
@@ -270,9 +270,9 @@ static void give_change (fsm_t* this){
 
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start2));
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_cg);
 	coffe_given = 0;
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_cg);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop2);
 	timespec_sub(&total2, &stop2, &start2);
@@ -281,9 +281,9 @@ static void give_change (fsm_t* this){
 
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start3));
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_gc);
 	giving_coffe = 0;
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_gc);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop3);
 	timespec_sub(&total3, &stop3, &start3);
@@ -300,9 +300,9 @@ static void give_money (fsm_t* this){
 	money = 0;
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start1));
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_cgc);
 	can_give_coffe = 0;
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_cgc);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop1);
 	timespec_sub(&total1, &stop1, &start1);
@@ -311,9 +311,9 @@ static void give_money (fsm_t* this){
 
 	TIME2(clock_gettime( CLOCK_MONOTONIC, &start2));
 
-	pthread_mutex_lock(&m_scr);
+	pthread_mutex_lock(&m_cg);
 	coffe_given = 0;
-	pthread_mutex_unlock(&m_scr);
+	pthread_mutex_unlock(&m_cg);
 
 	TIME2({clock_gettime( CLOCK_MONOTONIC, &stop2);
 	timespec_sub(&total2, &stop2, &start2);
@@ -347,7 +347,7 @@ static fsm_trans_t wallet[] = {
 
 // Utility functions, should be elsewhere
 // res = a - b
-void
+/*void
 timeval_sub (struct timeval *res, struct timeval *a, struct timeval *b)
 {
 	res->tv_sec = a->tv_sec - b->tv_sec;
@@ -374,7 +374,7 @@ void delay_until (struct timeval* next_activation)
 	gettimeofday (&now, NULL);
 	timeval_sub (&timeout, next_activation, &now);
 	select (0, NULL, NULL, NULL, &timeout);
-}
+}*/
 
 //functions for our tasks
 
@@ -417,13 +417,15 @@ int main ()
 	cofm_fsm = fsm_new (cofm);
 	wallet_fsm = fsm_new(wallet);
 
-	pthread_t coffe = task_new ("coffe_task", task1_func, 300, 300, 1, 1024);
-	pthread_join (coffe, NULL);
+	pthread_t coffe = task_new ("coffe_task", task1_func, 300, 300, 2, 1024);
+	//pthread_join (coffe, NULL);
 
-	pthread_t wallet = task_new ("wallet_task", task2_func, 400, 400, 2, 1024);
-	pthread_join (wallet, NULL);
+	pthread_t wallet = task_new ("wallet_task", task2_func, 400, 400, 1, 1024);
+	//pthread_join (wallet, NULL);
 
-	init_mutex (&m_scr, 1);
+	mutex_init (&m_gc, 1);
+	mutex_init (&m_cgc, 1);
+	mutex_init (&m_cg, 1);
 
 	wiringPiSetup();
 	pinMode (GPIO_BUTTON, INPUT);

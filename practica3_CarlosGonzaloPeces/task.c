@@ -65,7 +65,7 @@ void mutex_init (pthread_mutex_t* m, int prioceiling) //inicia un mutex, para pr
 {
 	pthread_mutexattr_t attr;
 	pthread_mutexattr_init (&attr);
-	pthread_mutexattr_setprotocol (&attr, PTHREAD_PRIO_PROTECT);  //especifica techo de prioridad o herencia
+	pthread_mutexattr_setprotocol (&attr, PTHREAD_PRIO_INHERIT);  //especifica techo de prioridad o herencia
 	pthread_mutex_init (m, &attr);
 	pthread_mutex_setprioceiling(m, sched_get_priority_min(SCHED_FIFO) + prioceiling, NULL);
 }
